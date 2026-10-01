@@ -1,7 +1,8 @@
 import LinkedList from "../linked-list.js";
 class HashMap {
-  constructor(capacity = 16) {
+  constructor(capacity = 16, loadFactor = 0.75) {
     this.capacity = capacity;
+    this.loadFactor = loadFactor;
     this.buckets = Array.from({ length: capacity }, () => new LinkedList());
     this.size = 0;
   }
@@ -12,10 +13,10 @@ class HashMap {
 
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
-      hashCode = primeNumber * hashCode + key.charCodeAt(i);
+      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
     }
 
-    return hashCode % this.capacity;
+    return hashCode;
   }
 
   set(key, value) {
@@ -31,6 +32,22 @@ class HashMap {
 
     this.buckets[index].append({ key, value });
     this.size++;
+    if (this.size / this.capacity > this.loadFactor) {
+      this.resize();
+    }
+  }
+
+  resize() {
+    const entries = this.entries();
+    this.capacity *= 2;
+    this.buckets = Array.from(
+      { length: this.capacity },
+      () => new LinkedList(),
+    );
+
+    for (const [key, value] of entries) {
+      this.buckets[this.hash(key)].append({ key, value });
+    }
   }
 
   get(key) {

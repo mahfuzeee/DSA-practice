@@ -15,9 +15,15 @@ test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
 
-test.set("dog", "black");
+console.log(test.get("apple"));
+console.log(test.length());
 
-//console.log(test.length());
+console.log(test.get("apple"));
+console.log(test.get("banana"));
+console.log(test.get("carrot"));
+console.log(test.get("dog"));
+console.log(test.get("elephant"));
+console.log(test.get("frog"));
 
-console.log(test.hash("kite"));
-console.log(test.hash("djkk5g"));
+test.set("moon", "silver");
+console.log(test.length());
